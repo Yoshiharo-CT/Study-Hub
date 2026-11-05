@@ -15,9 +15,13 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // ---- DB CONFIG — edit to match your XAMPP/MySQL setup ----
 const DB_HOST = '127.0.0.1';
-const DB_NAME = 'study_hub_db';
+const DB_NAME = 'hub_study';
 const DB_USER = 'root';
 const DB_PASS = '';
+
+// Store operating hours for customer reservations.
+const RESERVATION_OPEN_HOUR = 9;
+const RESERVATION_CLOSE_HOUR = 21;
 
 try {
     $pdo = new PDO(
@@ -100,6 +104,24 @@ function require_permission(string $perm): array
         json_response(['success' => false, 'message' => 'You do not have permission to do that.'], 403);
     }
     return $staff;
+}
+
+function is_customer_reservation_slot(string $date, string $start, string $end): bool
+{
+    $reservationDate = DateTimeImmutable::createFromFormat('!Y-m-d', $date);
+    $startTime = DateTimeImmutable::createFromFormat('!H:i', $start);
+    $endTime = DateTimeImmutable::createFromFormat('!H:i', $end);
+    if (!$reservationDate || $reservationDate->format('Y-m-d') !== $date
+        || !$startTime || $startTime->format('H:i') !== $start
+        || !$endTime || $endTime->format('H:i') !== $end) {
+        return false;
+    }
+
+    $startHour = (int) $startTime->format('G');
+    return $startTime->format('i') === '00'
+        && $startHour >= RESERVATION_OPEN_HOUR
+        && $startHour < RESERVATION_CLOSE_HOUR
+        && $endTime->format('H:i') === sprintf('%02d:00', $startHour + 1);
 }
 
 // ---- Audit log (Phase 10.5) ----

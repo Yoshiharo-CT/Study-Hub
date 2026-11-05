@@ -3,25 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Study Hub | Space Availability &amp; Reservation System</title>
+    <title>GEMINILE STUDY HUB | Space Availability &amp; Reservation System</title>
     <link rel="stylesheet" href="assets/css/style.css" />
   </head>
   <body>
     <aside class="sidebar">
       <div class="brand">
-        <div class="brand-mark">SH</div>
+        <img
+          class="brand-mark"
+          src="assets/image fd/logo.jpg"
+          alt="GEMINILE Study Hub logo"
+        />
         <div class="brand-text">
-          <h1>Study Hub</h1>
-          <span>Front desk console</span>
+          <h1>GEMINILE</h1>
+          <span>GEMINILE STUDY HUB</span>
         </div>
       </div>
 
-      <nav class="tabs" id="tabs">
+      <nav class="tabs" id="tabs" data-label="Main menu">
         <button
           class="tab-btn active"
           data-perm="dashboard"
           data-target="panel-dashboard"
-          style="--dot: #7c6df2"
         >
           <span class="tab-dot"></span>Dashboard
         </button>
@@ -29,7 +32,6 @@
           class="tab-btn"
           data-perm="customers"
           data-target="panel-customers"
-          style="--dot: #22c55e"
         >
           <span class="tab-dot"></span>Customers
         </button>
@@ -37,7 +39,6 @@
           class="tab-btn"
           data-perm="spaces"
           data-target="panel-spaces"
-          style="--dot: #06b6d4"
         >
           <span class="tab-dot"></span>Spaces
         </button>
@@ -45,7 +46,6 @@
           class="tab-btn"
           data-perm="maintenance"
           data-target="panel-maintenance"
-          style="--dot: #06b6d4"
         >
           <span class="tab-dot"></span>Maintenance
         </button>
@@ -53,7 +53,6 @@
           class="tab-btn"
           data-perm="reservations"
           data-target="panel-reservations"
-          style="--dot: #f59e0b"
         >
           <span class="tab-dot"></span>Reservations
         </button>
@@ -61,7 +60,6 @@
           class="tab-btn"
           data-perm="walkins"
           data-target="panel-walkins"
-          style="--dot: #f59e0b"
         >
           <span class="tab-dot"></span>Walk-in queue
         </button>
@@ -69,7 +67,6 @@
           class="tab-btn"
           data-perm="sessions"
           data-target="panel-sessions"
-          style="--dot: #ef4444"
         >
           <span class="tab-dot"></span>Sessions
         </button>
@@ -77,15 +74,13 @@
           class="tab-btn"
           data-perm="orders"
           data-target="panel-orders"
-          style="--dot: #ec4899"
         >
-          <span class="tab-dot"></span>Orders (POS)
+          <span class="tab-dot"></span>Café &amp; POS
         </button>
         <button
           class="tab-btn"
           data-perm="promotions"
           data-target="panel-promotions"
-          style="--dot: #ec4899"
         >
           <span class="tab-dot"></span>Promotions
         </button>
@@ -93,7 +88,6 @@
           class="tab-btn"
           data-perm="billing"
           data-target="panel-billing"
-          style="--dot: #3b82f6"
         >
           <span class="tab-dot"></span>Billing
         </button>
@@ -101,7 +95,6 @@
           class="tab-btn"
           data-perm="payments"
           data-target="panel-payments"
-          style="--dot: #10b981"
         >
           <span class="tab-dot"></span>Payments
         </button>
@@ -109,7 +102,6 @@
           class="tab-btn"
           data-perm="staff"
           data-target="panel-staff"
-          style="--dot: #94a3b8"
         >
           <span class="tab-dot"></span>Staff
         </button>
@@ -117,7 +109,6 @@
           class="tab-btn"
           data-perm="reports"
           data-target="panel-reports"
-          style="--dot: #94a3b8"
         >
           <span class="tab-dot"></span>Reports &amp; Audit
         </button>
@@ -125,7 +116,6 @@
           class="tab-btn"
           data-perm="notifications"
           data-target="panel-notifications"
-          style="--dot: #7c6df2"
         >
           <span class="tab-dot"></span>Notifications
         </button>
@@ -143,16 +133,6 @@
         </div>
         <div class="sidebar-actions">
           <button
-            class="theme-toggle"
-            type="button"
-            data-theme-toggle
-            aria-label="Switch to light theme"
-            aria-pressed="false"
-            title="Switch to light theme"
-          >
-            ☼
-          </button>
-          <button
             class="logout-btn"
             id="btn-logout"
             type="button"
@@ -166,10 +146,16 @@
     </aside>
 
     <div class="main-wrap">
+      <header class="topbar">
+        <div>
+          <h1 id="page-title">Dashboard</h1>
+          <p class="hint">Spaces, study sessions and café orders in one place.</p>
+        </div>
+        <span class="chip-time" id="clock-badge">🕒 --:--</span>
+      </header>
       <main>
         <!-- DASHBOARD -->
         <section id="panel-dashboard" class="panel active">
-          <h2>Today at a glance</h2>
           <div class="kpi-grid">
             <div class="kpi-card">
               <div class="hint">Spaces occupied</div>
@@ -196,19 +182,10 @@
               <div class="kpi-value" id="kpi-revenue">–</div>
             </div>
           </div>
-          <h2>Live space status</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>Space</th>
-                <th>Type</th>
-                <th>Capacity</th>
-                <th>Rate/hr</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody id="dashboard-spaces-table"></tbody>
-          </table>
+          <div class="card">
+            <h2>Current space status</h2>
+            <div class="space-grid" id="dashboard-space-grid"></div>
+          </div>
         </section>
 
         <!-- CUSTOMERS -->
@@ -218,7 +195,7 @@
             Guests sign themselves up on the login page; use this form only to
             log a customer manually.
           </p>
-          <form id="customer-form">
+          <div class="card"><form id="customer-form">
             <div class="form-grid">
               <label
                 >First name<input type="text" id="cust-first-name" required

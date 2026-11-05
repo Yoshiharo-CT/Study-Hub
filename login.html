@@ -3,20 +3,39 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Study Hub | Login</title>
+    <title>GEMINILE STUDY HUB | Login</title>
     <link rel="stylesheet" href="assets/css/style.css" />
   </head>
   <body>
     <div class="login-shell">
       <div class="login-hero">
-        <div class="brand-mark">SH</div>
-        <h1>Welcome to Study Hub.</h1>
-        <p>Sign in to Study Hub or create an account to get started.</p>
+        <img
+          class="brand-mark"
+          src="assets/image fd/logo.jpg"
+          alt="GEMINILE Study Hub logo"
+        />
+        <h1>
+          GEMINILE<br /><span class="hl">STUDY HUB</span>
+        </h1>
+        <p>
+          Find your focus in a calm study environment built for deep work,
+          meaningful learning, and productive daily routines.
+        </p>
+        <ul class="hero-features">
+          <li>Real-time availability tracking</li>
+          <li>Seamless GCash reservations</li>
+          <li>Iced coffees &amp; chilled café favorites</li>
+        </ul>
       </div>
 
       <div class="login-side">
         <div class="login-card">
-          <h2>Login</h2>
+          <h2 style="text-align: center; font-size: 24px; letter-spacing: 0.08em; text-transform: uppercase;">
+            GEMINILE
+          </h2>
+          <p class="hint" style="text-align: center; margin-top: -6px">
+            Welcome back! Ready to focus?
+          </p>
 
           <div class="mode-switch" aria-label="Account action">
             <button type="button" class="mode-btn active" data-mode="login">
@@ -29,7 +48,7 @@
 
           <form id="form-login" class="login-form active">
             <label
-              >Username, phone number, or email
+              >Email or phone number
               <input type="text" id="login-identifier" required />
             </label>
             <label
@@ -68,16 +87,6 @@
 
           <div class="form-msg" id="login-msg"></div>
         </div>
-        <button
-          class="theme-toggle"
-          type="button"
-          data-theme-toggle
-          aria-label="Switch to light theme"
-          aria-pressed="false"
-          title="Switch to light theme"
-        >
-          ☼
-        </button>
       </div>
     </div>
 
@@ -127,10 +136,8 @@
               showMsg("Login successful. Redirecting…", true);
               setTimeout(() => (window.location.href = "index.html"), 400);
             } else {
-              showMsg(
-                "Login successful. Please continue with the front desk.",
-                true,
-              );
+              showMsg("Login successful. Opening your dashboard…", true);
+              setTimeout(() => (window.location.href = "customer.html"), 400);
             }
           } else {
             showMsg(res.data.message, false);
@@ -158,7 +165,7 @@
           const res = await apiClient.post(`${baseApiUrl}/auth.php`, fd);
           if (res.data.success) {
             showMsg(
-              "Account created. Please continue with the front desk.",
+              "Your account has been created successfully. Please sign in to continue.",
               true,
             );
             e.target.reset();

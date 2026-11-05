@@ -1,9 +1,12 @@
 <?php
 declare(strict_types=1);
 require __DIR__ . '/connection-pdo.php';
-require_staff_login();
+$who = require_login();
 
 $op = get_operation();
+if ($who['type'] === 'customer' && $op !== 'checkAvailability') {
+    json_response(['success' => false, 'message' => 'This operation is for staff only.'], 403);
+}
 
 switch ($op) {
     // ---------------- Phase 2.1 — browse spaces ----------------
@@ -34,6 +37,25 @@ switch ($op) {
         $end = (string) input('end_time');
         if ($date === '' || $start === '' || $end === '') {
             json_response(['success' => false, 'message' => 'Date, start time, and end time are required.']);
+        }
+        $reservationDate = DateTimeImmutable::createFromFormat('!Y-m-d', $date);
+        $startTime = DateTimeImmutable::createFromFormat('!H:i', $start);
+        $endTime = DateTimeImmutable::createFromFormat('!H:i', $end);
+        if (!$reservationDate || $reservationDate->format('Y-m-d') !== $date
+            || !$startTime || $startTime->format('H:i') !== $start
+            || !$endTime || $endTime->format('H:i') !== $end) {
+            json_response(['success' => false, 'message' => 'Enter a valid reservation date and time.']);
+        }
+        $startDateTime = new DateTimeImmutable("$date $start");
+        $endDateTime = new DateTimeImmutable("$date $end");
+        if ($endDateTime <= $startDateTime) {
+            json_response(['success' => false, 'message' => 'End time must be after start time.']);
+        }
+        if ($who['type'] === 'customer' && !is_customer_reservation_slot($date, $start, $end)) {
+            json_response(['success' => false, 'message' => 'Choose a one-hour reservation slot between 8:00 AM and 5:00 PM.']);
+        }
+        if ($startDateTime <= new DateTimeImmutable()) {
+            json_response(['success' => false, 'message' => 'Availability can only be checked for a future time.']);
         }
         $sql = "SELECT ss.*, st.type_name, st.base_rate
                 FROM study_spaces ss

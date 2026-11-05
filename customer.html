@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GEMINILE STUDY HUB | Customer Dashboard</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body>
+    <aside class="sidebar">
+      <div class="brand">
+        <img
+          class="brand-mark"
+          src="assets/image fd/logo.jpg"
+          alt="GEMINILE Study Hub logo"
+        />
+        <div class="brand-text">
+          <h1>GEMINILE</h1>
+          <span>GEMINILE STUDY HUB</span>
+        </div>
+      </div>
+      <nav class="tabs" aria-label="Main menu">
+        <button class="tab-btn active" type="button" data-target="panel-home">
+          <span class="tab-dot"></span>Dashboard
+        </button>
+        <button class="tab-btn" type="button" data-target="panel-reservations">
+          <span class="tab-dot"></span>Reservations
+        </button>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="staff-identity">
+          <span class="staff-avatar" id="customer-avatar" aria-hidden="true"
+            >SH</span
+          >
+          <div class="staff-details">
+            <strong id="customer-name">Loading…</strong>
+            <span>Customer</span>
+          </div>
+        </div>
+        <div class="sidebar-actions">
+          <button class="logout-btn" id="btn-logout" type="button">
+            <span aria-hidden="true">↪</span><span>Log out</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main-wrap">
+      <header class="topbar">
+        <div>
+          <h1 id="page-title">GEMINILE STUDY HUB</h1>
+          <p class="hint">Your guide to studying, booking, and productive campus life.</p>
+        </div>
+      </header>
+      <main>
+        <section class="panel active" id="panel-home">
+          <div class="card">
+            <h2 id="welcome-heading">Welcome to GEMINILE STUDY HUB</h2>
+            <p class="hint">
+              Here is a quick tour of everything available to you. Start by
+              checking an open study space and reserving a date and time.
+            </p>
+            <button
+              class="primary"
+              type="button"
+              data-open-panel="panel-reservations"
+            >
+              Find a study space
+            </button>
+          </div>
+
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="hint">Your reservations</div>
+              <div class="kpi-value" id="customer-reservation-count">0</div>
+            </div>
+            <div class="kpi-card">
+              <div class="hint">Awaiting approval</div>
+              <div class="kpi-value" id="customer-pending-count">0</div>
+            </div>
+          </div>
+
+          <h2>Explore GEMINILE STUDY HUB</h2>
+          <div class="kpi-grid">
+            <article class="kpi-card">
+              <h2>1. Choose your space</h2>
+              <p class="hint">
+                Check available spaces for your date, start time, and end time.
+                Only spaces open for that entire window can be selected.
+              </p>
+            </article>
+            <article class="kpi-card">
+              <h2>2. Reserve your time</h2>
+              <p class="hint">
+                Pick a space that fits your group and submit your reservation.
+                We email you when your request is received and again when
+                staff confirms it.
+              </p>
+            </article>
+            <article class="kpi-card">
+              <h2>3. Check in and study</h2>
+              <p class="hint">
+                When you arrive, staff can check you in and help you get settled
+                in your reserved space.
+              </p>
+            </article>
+            <article class="kpi-card">
+              <h2>4. Café and orders</h2>
+              <p class="hint">
+                Browse café items and ask the front desk to place an order
+                during your visit.
+              </p>
+            </article>
+            <article class="kpi-card">
+              <h2>5. Billing and payments</h2>
+              <p class="hint">
+                Staff can provide your bill and record or verify payments for
+                your visit and orders.
+              </p>
+            </article>
+            <article class="kpi-card">
+              <h2>6. Updates and help</h2>
+              <p class="hint">
+                Your reservation status appears below. Check your email for
+                reservation updates or contact the front desk if you need help.
+              </p>
+            </article>
+          </div>
+
+          <div class="card">
+            <h2>Your latest reservations</h2>
+            <div id="home-reservations">
+              <p class="hint">Loading your reservations…</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" id="panel-reservations">
+          <h2>Reserve an available space</h2>
+          <p class="hint">
+            Choose a future date and one-hour slot between 9:00 AM and 9:00 PM
+            to see spaces that are open and not under maintenance.
+          </p>
+          <form id="availability-form" class="card">
+            <div class="form-grid">
+              <label
+                >Date<input type="date" id="booking-date" required
+              /></label>
+              <label
+                >Reservation slot<select id="booking-slot" required>
+                  <option value="">Choose a date first…</option>
+                </select></label
+              >
+              <label
+                >Number of people<input
+                  type="number"
+                  id="booking-people"
+                  min="1"
+                  value="1"
+                  required
+              /></label>
+            </div>
+            <button type="submit" class="primary">Check available spaces</button>
+            <p class="hint" id="availability-message" role="status"></p>
+            <div id="available-spaces"></div>
+          </form>
+
+          <form id="customer-reservation-form" class="card">
+            <h2>Confirm your selected space</h2>
+            <p class="hint" id="selected-space">Check availability and select a space above.</p>
+            <button type="submit" class="primary" id="submit-reservation" disabled>
+              Submit reservation
+            </button>
+            <p class="hint" id="reservation-message" role="status"></p>
+          </form>
+
+          <div class="card">
+            <h2>Your reservations</h2>
+            <div id="customer-reservations">
+              <p class="hint">Loading your reservations…</p>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/customer.js"></script>
+  </body>
+</html>

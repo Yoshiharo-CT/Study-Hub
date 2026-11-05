@@ -550,14 +550,9 @@ async function loadSessions() {
         session_id: b.dataset.id,
       });
       if (r.data.success) {
-        alert(
-          `Checked out. Study fee: ₱${peso(r.data.study_fee)}. Remember to bill and collect payment before the customer leaves.`,
-        );
         await loadSessions();
         await loadDashboard();
         await loadSpaceOptions();
-      } else {
-        alert(r.data.message);
       }
     }),
   );
@@ -926,7 +921,10 @@ function wireForms() {
     const prod = PRODUCTS.find(
       (p) => String(p.product_id) === val("order-product"),
     );
-    if (!prod) return;
+    if (!prod) {
+      showSystemMessage("Select a café item before adding it to the cart.", false);
+      return;
+    }
     const qty = Math.max(1, Number(val("order-qty") || 1));
     const item = {
       product_id: prod.product_id,
@@ -946,6 +944,7 @@ function wireForms() {
     }
     CART.push(item);
     renderCart();
+    showSystemMessage(`${prod.item_name} added to the order.`, true);
   });
 
   document

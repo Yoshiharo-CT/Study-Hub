@@ -16,7 +16,7 @@ the schema/UI so every phase in your flow document is implemented:
 | 0 — Init                | `api/setup.php` creates the admin; `space_types`/`study_spaces`/`products_services` seeded in `study_hub_db.sql`                                                                                                                                            |
 | 1 — Registration/Login  | `api/auth.php` (`login`, `memberRegister`, `me`, `logout`), session-based staff/customer auth                                                                                                                                                               |
 | 2 — Browse/Availability | `api/spaces.php` (`listSpaces`, `checkAvailability` — excludes overlapping reservations _and_ scheduled maintenance)                                                                                                                                        |
-| 3 — Reservation         | `api/reservations.php` (`create` with overlap + capacity + maintenance checks, `confirm`, `cancel`, `noShow`), notifications to staff/customer                                                                                                              |
+| 3 — Reservation         | Customer dashboard offers fixed one-hour slots from 8:00 AM to 5:00 PM and checks availability before booking; `api/reservations.php` enforces customer slot, overlap, capacity, and maintenance rules and emails request/confirmation updates; staff can `confirm`, `cancel`, or `noShow` |
 | 4 — Walk-in             | **New** `walkin_queue` table + `api/walkin.php` (`add`, `list`, `cancel`); auto-served on check-out                                                                                                                                                         |
 | 5 — Reserved check-in   | `api/sessions.php` `checkIn` (accepts `reservation_id`, marks reservation completed)                                                                                                                                                                        |
 | 6 — Active session      | `checkIn` issues a Wi-Fi password (**new** `space_sessions.wifi_password` column); `extendSession` writes to `session_extensions`; `api/orders.php` writes `order_items` + `printing_jobs` and decrements stock; `api/promotions.php` validates promo codes |
@@ -50,6 +50,13 @@ with identical end results.
 4. Visit `http://localhost/Study%20Hub/api/setup.php` once — creates
    the admin login if missing.
 5. Open `http://localhost/Study%20Hub/login.html`.
+6. Configure PHP's `mail()` transport in XAMPP (or a local sendmail relay)
+   with a verified sender address before expecting reservation emails to be
+   delivered. Update the `From` address in `api/reservations.php` to match
+   that sender. The app reports when an email could not be sent.
+7. Customer bookings use fixed one-hour slots from 9:00 AM–10:00 AM through
+   8:00 PM–9:00 PM. The customer dashboard shares the staff application's
+   warm coffee-brown and cream stylesheet, including its light/dark theme.
 
 For an existing database, run `migrations/remove_tax.sql` once to remove the
 tax settings, category tax flag, and stored transaction tax values.
